@@ -219,7 +219,7 @@ void VoodooGPIO::intel_gpio_irq_enable(unsigned pin){
         gpp = padgrp->reg_num;
         gpp_offset = padgroup_offset(padgrp, pin);
         /* Clear interrupt status first to avoid unexpected interrupt */
-        writel(BIT(gpp_offset), community->regs + GPI_IS + gpp * 4);
+        writel((UInt32)BIT(gpp_offset), community->regs + GPI_IS + gpp * 4);
         
         value = readl(community->regs + community->ie_offset + gpp * 4);
         value |= BIT(gpp_offset);
@@ -315,7 +315,7 @@ bool VoodooGPIO::intel_pinctrl_add_padgroups(intel_community *community){
             unsigned gpp_size = community->gpp_size;
             gpps[i].reg_num = i;
             gpps[i].base = community->pin_base + i * gpp_size;
-            gpps[i].size = min(gpp_size, npins);
+            gpps[i].size = min(gpp_size, (unsigned)npins);
             npins -= gpps[i].size;
         }
         
